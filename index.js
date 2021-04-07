@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const MongoClient = require("mongodb").MongoClient;
-const  ObjectId  = require('mongodb').ObjectId;
+const ObjectId = require("mongodb").ObjectId;
 require("dotenv").config();
 
 const port = process.env.PORT || 5000;
@@ -24,53 +24,48 @@ client.connect((err) => {
   const booksCollection = client.db("BookShop").collection("books");
   const ordersCollection = client.db("BookShop").collection("orders");
 
-  app.get('/events', (req, res) => {
-    booksCollection.find()
-    .toArray((err, items) => {
+  app.get("/events", (req, res) => {
+    booksCollection.find().toArray((err, items) => {
       res.send(items);
-    })
-  })
+    });
+  });
 
-  app.get('/product/:id', (req, res) => {
-    booksCollection.find({_id: ObjectId(req.params.id)})
-    .toArray( (err, documents) => {
-      res.send(documents);
-      console.log(err);
-    })
-  })
+  app.get("/product/:id", (req, res) => {
+    booksCollection
+      .find({ _id: ObjectId(req.params.id) })
+      .toArray((err, documents) => {
+        res.send(documents);
+        console.log(err);
+      });
+  });
 
-
-  app.post('/addEvent', (req, res) => {
+  app.post("/addEvent", (req, res) => {
     const newEvent = req.body;
-    booksCollection.insertOne(newEvent)
-    .then(result => {
-      res.send(result.insertedCount > 0)
-    })
-  })
+    booksCollection.insertOne(newEvent).then((result) => {
+      res.send(result.insertedCount > 0);
+    });
+  });
 
-  app.delete('/delete/:id', (req, res) => {
-    booksCollection.deleteOne({_id: ObjectId(req.params.id)})
-    .then(result => {
-      console.log(result);
-    })
-  })
+  app.delete("/delete/:id", (req, res) => {
+    booksCollection
+      .deleteOne({ _id: ObjectId(req.params.id) })
+      .then((result) => {
+        console.log(result);
+      });
+  });
 
-  app.post('/addOrder', (req, res) => {
+  app.post("/addOrder", (req, res) => {
     const order = req.body;
-    ordersCollection.insertOne(order)
-    .then(result => {
-      res.send(result.insertedCount > 0)
-    })
-  })
+    ordersCollection.insertOne(order).then((result) => {
+      res.send(result.insertedCount > 0);
+    });
+  });
 
-  app.get('heroku login', (req, res) => {
-    ordersCollection.find()
-    .toArray((err, items) => {
+  app.get("heroku login", (req, res) => {
+    ordersCollection.find().toArray((err, items) => {
       res.send(items);
-    })
-  })
+    });
+  });
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-});
+app.listen(process.env.PORT || port);
