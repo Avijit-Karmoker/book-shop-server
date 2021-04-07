@@ -11,7 +11,10 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  const newEvent = req.body;
+    booksCollection.insertOne(newEvent).then((result) => {
+      res.send(result.insertedCount > 0);
+    });
 });
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.2zom1.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
