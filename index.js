@@ -61,7 +61,7 @@ client.connect((err) => {
     });
   });
 
-  app.get("heroku login", (req, res) => {
+  app.get("/orders", (req, res) => {
     ordersCollection.find().toArray((err, items) => {
       res.send(items);
     });
